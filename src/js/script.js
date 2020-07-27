@@ -138,32 +138,31 @@
       });
     }
     processOrder(){
-      const thisProduct = this;
+      const thisProduct = this; // this wskazuje na całą instancje klasy Product(jedną z 4 powstałych). Każda z metod które piszemy w klasie odnosi sie do kazdej instancji z osobna
       console.log(thisProduct);
-      /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
-      const formData = utils.serializeFormToObject(thisProduct.form);
+      const formData = utils.serializeFormToObject(thisProduct.form); //generuje obiekt z elementuDOM(form) - nie mam pojecia jak to sie dzieje - powinienem?
       console.log(formData);
-      let price = thisProduct.data.price;
-      if(thisProduct.data.params) {
-        for(let param in thisProduct.data.params){
-          const paramValue = thisProduct.data.params[param];
+      let price = thisProduct.data.price; //wskazuje na cene w analizowanej instancji
+      if(thisProduct.data.params) { //jezeli instancja posiada obiekt params (pierwsza nie posiada wiec jej wgle nie analizujemy bo cena i tak sie nie zmieni)
+        for(let param in thisProduct.data.params){ //dla kazdego parametru z obiektu params
+          const paramValue = thisProduct.data.params[param]; //wygeneruj wartosc tego parametru(np przy pizzy bedzie to crust/toppings/sauce) i zapisz w stalej paramValue. Operacja jest robiona po to by dostać sie do srodka kazdego z parametrow(jest ich rozna ilosc w zalenosci od instancji).
           console.log(param);
           console.log(paramValue);
-          for(let option in paramValue.options){
-            const optionValue = paramValue.options[option];
-            if(formData[param]){
-              if(formData[param].includes(option) && !optionValue.default){
-                price += optionValue.price;
+          for(let option in paramValue.options){//dla kazdej opcji z paramValue.options
+            const optionValue = paramValue.options[option]; // dostań sie do kazdej opcji i po to by pozniej na niej operowac
+            if(formData[param]){//jesli obiekt formData z analizowanym parametrem istnieje - czyli zwraca true
+              if(formData[param].includes(option) && !optionValue.default){ // to sprawdz czy obiekt z tym parametrem zawiera analizowaną opcje i czy w tej opcji jest jest wlasciwosc default jezeli nie ma to z warunku wyjdzie true
+                price += optionValue.price; // nalezy dodac wartosc klucza price z obiektu optionValue
                 console.log(formData[param], option, 'jest');
-              } else if(optionValue.default && !formData[param].includes(option)) {
-                price -= optionValue.price;
+              } else if(optionValue.default && !formData[param].includes(option)) { // jezeli obiekt optionValue zawiera w sobie default(istnieje) i obiekt formData z analizowanym parametrem zawiera analizowaną opcje to z warunku wyjdzie true
+                price -= optionValue.price; // to od ceny należy odjac wartosc klucza price z obiektu optionValue
                 console.log(formData[param], option, 'nie ma');
               }
             }
           }
         }
       }
-      thisProduct.priceElem.innerHTML = price;
+      thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
     }
   }
 
