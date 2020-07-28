@@ -163,17 +163,17 @@
             }
             if(formData[param].includes(option)){
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
+              console.log(allImages)
               for (let image of allImages) {
                 image.classList.add('active');
               }
-            } else {
+            } else if(!formData[param].includes(option)) {
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
               for (let image of allImages) {
                 image.classList.remove('active');
               }
             }
           }
-
         }
       }
       thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
