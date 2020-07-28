@@ -94,6 +94,8 @@
       //console.log(thisProduct.cartButton)
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       //console.log(thisProduct.priceElem)
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      console.log(thisProduct.imageWrapper);
     }
     initAccordion() {
       const thisProduct = this;
@@ -159,7 +161,19 @@
                 console.log(formData[param], option, 'nie ma');
               }
             }
+            if(formData[param].includes(option)){
+              let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
+              for (let image of allImages) {
+                image.classList.add('active');
+              }
+            } else {
+              let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
+              for (let image of allImages) {
+                image.classList.remove('active');
+              }
+            }
           }
+
         }
       }
       thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
@@ -173,6 +187,8 @@
       console.log(thisApp.data);
       for(let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
+        console.log(productData);
+        console.log(thisApp.data.products[productData]);
       }
     },
 
