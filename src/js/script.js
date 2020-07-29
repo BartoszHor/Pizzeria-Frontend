@@ -62,7 +62,7 @@
       thisProduct.getElement();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
-      thisProduct.initAmountWidget()
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
 
 
@@ -97,8 +97,8 @@
       //console.log(thisProduct.priceElem)
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       //console.log(thisProduct.imageWrapper);
-      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget)
-      console.log(thisProduct.amountWidgetElem)
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      console.log(thisProduct.amountWidgetElem);
     }
     initAccordion() {
       const thisProduct = this;
@@ -144,10 +144,12 @@
     }
 
     initAmountWidget() {
-      const thisProduct = this
-      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem)
-      console.log(thisProduct.amountWidget)
-      thisProduct.amountWidgetElem.addEventListener('updated', thisProduct.processOrder())
+      const thisProduct = this;
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      console.log(thisProduct.amountWidget);
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
 
     }
     processOrder(){
@@ -164,13 +166,13 @@
           for(let option in paramValue.options){//dla kazdej opcji z paramValue.options
             const optionValue = paramValue.options[option]; // dostań sie do kazdej opcji i po to by pozniej na niej operowac
             //console.log(optionValue);
-            let formDataParam = formData[param] || []
+            let formDataParam = formData[param] || [];
             if(formDataParam){//jesli obiekt formData z analizowanym parametrem istnieje - czyli zwraca true
               if(formDataParam.includes(option) && !optionValue.default){ // to sprawdz czy obiekt z tym parametrem zawiera analizowaną opcje i czy w tej opcji jest jest wlasciwosc default jezeli nie ma to z warunku wyjdzie true
                 price += optionValue.price; // nalezy dodac wartosc klucza price z obiektu optionValue
                 //console.log(formDataParam, option, 'jest');
                 if(!formDataParam.includes(option)){
-                  price -= optionValue.price
+                  price -= optionValue.price;
                 }
               } else if(optionValue.default && !formDataParam.includes(option)) { // jezeli obiekt optionValue zawiera w sobie default(istnieje) i obiekt formData z analizowanym parametrem zawiera analizowaną opcje to z warunku wyjdzie true
                 price -= optionValue.price; // to od ceny należy odjac wartosc klucza price z obiektu optionValue
@@ -192,65 +194,67 @@
           }
         }
       }
-      price *= thisProduct.amountWidget.value
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
     }
   }
 
   class AmountWidget {
     constructor(element){
-    const thisWidget = this;
-    thisWidget.getElements(element)
-    thisWidget.setValue(thisWidget.input.value)
-    thisWidget.initActions();
-    //console.log(thisWidget.setValue(thisWidget.input.value))
+      const thisWidget = this;
+      thisWidget.getElements(element);
+      thisWidget.value = settings.amountWidget.defaultValue;
+      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
+      //console.log(thisWidget.setValue(thisWidget.input.value))
 
     //console.log(thisWidget)
     //console.log(element)
+    }
+    getElements(element){
+      const thisWidget = this;
+
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+    setValue(value){
+      const thisWidget = this;
+      const newValue = parseInt(value);
+      if (newValue != thisWidget.value && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax){
+        thisWidget.value = newValue;
+        thisWidget.announce();
+      }
+      console.log(thisWidget.value);
+      thisWidget.input.value = thisWidget.value;
+      console.log(thisWidget.input.value);
+    }
+
+    announce(){
+      const thisWidget = this;
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+      console.log(event);
+    }
+
+    initActions(){
+      const thisWidget = this;
+      thisWidget.linkIncrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+      });
+
+      thisWidget.linkDecrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+
+      thisWidget.input.addEventListener('change', function(){
+        thisWidget.setValue(thisWidget.input.value);
+      });
+    }
   }
-  getElements(element){
-  const thisWidget = this;
-
-  thisWidget.element = element;
-  thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
-  thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
-  thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
-  }
-  setValue(value){
-    const thisWidget = this;
-    const newValue = parseInt(value);
-
-    thisWidget.value = newValue
-    thisWidget.announce()
-    console.log(thisWidget.value)
-    thisWidget.input.value = thisWidget.value
-    console.log(thisWidget.input.value)
-  }
-
-  announce(){
-    const thisWidget = this
-    const event = new Event('updated')
-    thisWidget.element.dispatchEvent(event)
-    console.log(event)
-  }
-
-  initActions(){
-    const thisWidget = this
-    thisWidget.linkIncrease.addEventListener('click', function(event){
-      event.preventDefault()
-      thisWidget.setValue(thisWidget.value + 1)
-    })
-
-    thisWidget.linkDecrease.addEventListener('click', function(event){
-      event.preventDefault()
-      thisWidget.setValue(thisWidget.value - 1)
-    })
-
-    thisWidget.input.addEventListener('change', function(){
-      thisWidget.setValue(thisWidget.input.value)
-    })
-  }
-}
 
 
 
