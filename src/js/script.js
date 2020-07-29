@@ -62,6 +62,7 @@
       thisProduct.getElement();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget()
       thisProduct.processOrder();
 
 
@@ -69,12 +70,12 @@
     }
     renderInMenu() {
       const thisProduct = this;
-      console.log(thisProduct);
+      //console.log(thisProduct);
       /* generate HTML based on template */
       const generatedHTML = templates.menuProduct(thisProduct.data);
       /* create element using utils.createElementFromHTML */
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-      console.log(thisProduct.element);
+      //console.log(thisProduct.element);
       /* find menu container */
       const menuContainer = document.querySelector(select.containerOf.menu);
       /* add element to menu */
@@ -95,11 +96,13 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       //console.log(thisProduct.priceElem)
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      console.log(thisProduct.imageWrapper);
+      //console.log(thisProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget)
+      console.log(thisProduct.amountWidgetElem)
     }
     initAccordion() {
       const thisProduct = this;
-      console.log(thisProduct);
+      //console.log(thisProduct);
       /* find the clickable trigger (the element that should react to clicking) */
       const clickableTrigger = thisProduct.accordionTrigger;
       /* START: click event listener to trigger */
@@ -123,7 +126,7 @@
     }
     initOrderForm(){
       const thisProduct = this;
-      console.log(thisProduct);
+      //console.log(thisProduct);
 
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
@@ -139,32 +142,43 @@
         thisProduct.processOrder();
       });
     }
+
+    initAmountWidget() {
+      const thisProduct = this
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem)
+      console.log(thisProduct.amountWidget)
+
+    }
     processOrder(){
       const thisProduct = this; // this wskazuje na całą instancje klasy Product(jedną z 4 powstałych). Każda z metod które piszemy w klasie odnosi sie do kazdej instancji z osobna
-      console.log(thisProduct);
+      //console.log(thisProduct);
       const formData = utils.serializeFormToObject(thisProduct.form); //generuje obiekt z elementuDOM(form) - nie mam pojecia jak to sie dzieje - powinienem?
-      console.log(formData);
+      //console.log(formData);
       let price = thisProduct.data.price; //wskazuje na cene w analizowanej instancji
       if(thisProduct.data.params) { //jezeli instancja posiada obiekt params (pierwsza nie posiada wiec jej wgle nie analizujemy bo cena i tak sie nie zmieni)
         for(let param in thisProduct.data.params){ //dla kazdego parametru z obiektu params
           const paramValue = thisProduct.data.params[param]; //wygeneruj wartosc tego parametru(np przy pizzy bedzie to crust/toppings/sauce) i zapisz w stalej paramValue. Operacja jest robiona po to by dostać sie do srodka kazdego z parametrow(jest ich rozna ilosc w zalenosci od instancji).
-          console.log(param);
-          console.log(paramValue);
+          //console.log(param);
+          //console.log(paramValue);
           for(let option in paramValue.options){//dla kazdej opcji z paramValue.options
             const optionValue = paramValue.options[option]; // dostań sie do kazdej opcji i po to by pozniej na niej operowac
-            console.log(optionValue);
-            if(formData[param]){//jesli obiekt formData z analizowanym parametrem istnieje - czyli zwraca true
-              if(formData[param].includes(option) && !optionValue.default){ // to sprawdz czy obiekt z tym parametrem zawiera analizowaną opcje i czy w tej opcji jest jest wlasciwosc default jezeli nie ma to z warunku wyjdzie true
+            //console.log(optionValue);
+            let formDataParam = formData[param] || []
+            if(formDataParam){//jesli obiekt formData z analizowanym parametrem istnieje - czyli zwraca true
+              if(formDataParam.includes(option) && !optionValue.default){ // to sprawdz czy obiekt z tym parametrem zawiera analizowaną opcje i czy w tej opcji jest jest wlasciwosc default jezeli nie ma to z warunku wyjdzie true
                 price += optionValue.price; // nalezy dodac wartosc klucza price z obiektu optionValue
-                console.log(formData[param], option, 'jest');
-              } else if(optionValue.default && !formData[param].includes(option)) { // jezeli obiekt optionValue zawiera w sobie default(istnieje) i obiekt formData z analizowanym parametrem zawiera analizowaną opcje to z warunku wyjdzie true
+                //console.log(formDataParam, option, 'jest');
+                if(!formDataParam.includes(option)){
+                  price -= optionValue.price
+                }
+              } else if(optionValue.default && !formDataParam.includes(option)) { // jezeli obiekt optionValue zawiera w sobie default(istnieje) i obiekt formData z analizowanym parametrem zawiera analizowaną opcje to z warunku wyjdzie true
                 price -= optionValue.price; // to od ceny należy odjac wartosc klucza price z obiektu optionValue
-                console.log(formData[param], option, 'nie ma');
+                //console.log(formDataParam, option, 'nie ma');
               }
             }
-            if(formData[param] && formData[param].includes(option)){
+            if(formDataParam && formDataParam.includes(option)){
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
-              console.log(allImages);
+              //console.log(allImages);
               for (let image of allImages) {
                 image.classList.add('active');
               }
@@ -181,15 +195,64 @@
     }
   }
 
+  class AmountWidget {
+    constructor(element){
+    const thisWidget = this;
+    thisWidget.getElements(element)
+    thisWidget.setValue(thisWidget.input.value)
+    thisWidget.initActions();
+    //console.log(thisWidget.setValue(thisWidget.input.value))
+
+    //console.log(thisWidget)
+    //console.log(element)
+  }
+  getElements(element){
+  const thisWidget = this;
+
+  thisWidget.element = element;
+  thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+  thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+  thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+  }
+  setValue(value){
+    const thisWidget = this;
+    const newValue = parseInt(value);
+
+    thisWidget.value = newValue
+    console.log(thisWidget.value)
+    thisWidget.input.value = thisWidget.value
+    console.log(thisWidget.input.value)
+  }
+
+  initActions(){
+    const thisWidget = this
+    thisWidget.linkIncrease.addEventListener('click', function(event){
+      event.preventDefault()
+      thisWidget.setValue(thisWidget.value + 1)
+    })
+
+    thisWidget.linkDecrease.addEventListener('click', function(event){
+      event.preventDefault()
+      thisWidget.setValue(thisWidget.value - 1)
+    })
+
+    thisWidget.input.addEventListener('change', function(){
+      thisWidget.setValue(thisWidget.input.value)
+    })
+  }
+}
+
+
+
   const app = {
     initMenu: function() {
       const thisApp = this;
 
-      console.log(thisApp.data);
+      //console.log(thisApp.data);
       for(let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
-        console.log(productData);
-        console.log(thisApp.data.products[productData]);
+        //console.log(productData);
+        //console.log(thisApp.data.products[productData]);
       }
     },
 
