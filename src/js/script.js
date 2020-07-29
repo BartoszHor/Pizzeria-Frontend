@@ -152,6 +152,7 @@
           console.log(paramValue);
           for(let option in paramValue.options){//dla kazdej opcji z paramValue.options
             const optionValue = paramValue.options[option]; // dostań sie do kazdej opcji i po to by pozniej na niej operowac
+            console.log(optionValue);
             if(formData[param]){//jesli obiekt formData z analizowanym parametrem istnieje - czyli zwraca true
               if(formData[param].includes(option) && !optionValue.default){ // to sprawdz czy obiekt z tym parametrem zawiera analizowaną opcje i czy w tej opcji jest jest wlasciwosc default jezeli nie ma to z warunku wyjdzie true
                 price += optionValue.price; // nalezy dodac wartosc klucza price z obiektu optionValue
@@ -161,13 +162,13 @@
                 console.log(formData[param], option, 'nie ma');
               }
             }
-            if(formData[param].includes(option)){
+            if(formData[param] && formData[param].includes(option)){
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
-              console.log(allImages)
+              console.log(allImages);
               for (let image of allImages) {
                 image.classList.add('active');
               }
-            } else if(!formData[param].includes(option)) {
+            } else {
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
               for (let image of allImages) {
                 image.classList.remove('active');
