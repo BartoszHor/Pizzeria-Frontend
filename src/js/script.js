@@ -147,6 +147,7 @@
       const thisProduct = this
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem)
       console.log(thisProduct.amountWidget)
+      thisProduct.amountWidgetElem.addEventListener('updated', thisProduct.processOrder())
 
     }
     processOrder(){
@@ -191,6 +192,7 @@
           }
         }
       }
+      price *= thisProduct.amountWidget.value
       thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
     }
   }
@@ -219,9 +221,17 @@
     const newValue = parseInt(value);
 
     thisWidget.value = newValue
+    thisWidget.announce()
     console.log(thisWidget.value)
     thisWidget.input.value = thisWidget.value
     console.log(thisWidget.input.value)
+  }
+
+  announce(){
+    const thisWidget = this
+    const event = new Event('updated')
+    thisWidget.element.dispatchEvent(event)
+    console.log(event)
   }
 
   initActions(){
@@ -241,6 +251,8 @@
     })
   }
 }
+
+
 
 
 
