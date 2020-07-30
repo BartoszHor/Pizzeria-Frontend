@@ -4,53 +4,87 @@
   'use strict';
 
   const select = {
-    templateOf: {
-      menuProduct: '#template-menu-product',
+  templateOf: {
+    menuProduct: '#template-menu-product',
+    cartProduct: '#template-cart-product', // CODE ADDED
+  },
+  containerOf: {
+    menu: '#product-list',
+    cart: '#cart',
+  },
+  all: {
+    menuProducts: '#product-list > .product',
+    menuProductsActive: '#product-list > .product.active',
+    formInputs: 'input, select',
+  },
+  menuProduct: {
+    clickable: '.product__header',
+    form: '.product__order',
+    priceElem: '.product__total-price .price',
+    imageWrapper: '.product__images',
+    amountWidget: '.widget-amount',
+    cartButton: '[href="#add-to-cart"]',
+  },
+  widgets: {
+    amount: {
+      input: 'input.amount', // CODE CHANGED
+      linkDecrease: 'a[href="#less"]',
+      linkIncrease: 'a[href="#more"]',
     },
-    containerOf: {
-      menu: '#product-list',
-      cart: '#cart',
-    },
-    all: {
-      menuProducts: '#product-list > .product',
-      menuProductsActive: '#product-list > .product.active',
-      formInputs: 'input, select',
-    },
-    menuProduct: {
-      clickable: '.product__header',
-      form: '.product__order',
-      priceElem: '.product__total-price .price',
-      imageWrapper: '.product__images',
-      amountWidget: '.widget-amount',
-      cartButton: '[href="#add-to-cart"]',
-    },
-    widgets: {
-      amount: {
-        input: 'input[name="amount"]',
-        linkDecrease: 'a[href="#less"]',
-        linkIncrease: 'a[href="#more"]',
-      },
-    },
-  };
+  },
+  // CODE ADDED START
+  cart: {
+    productList: '.cart__order-summary',
+    toggleTrigger: '.cart__summary',
+    totalNumber: `.cart__total-number`,
+    totalPrice: '.cart__total-price strong, .cart__order-total .cart__order-price-sum strong',
+    subtotalPrice: '.cart__order-subtotal .cart__order-price-sum strong',
+    deliveryFee: '.cart__order-delivery .cart__order-price-sum strong',
+    form: '.cart__order',
+    formSubmit: '.cart__order [type="submit"]',
+    phone: '[name="phone"]',
+    address: '[name="address"]',
+  },
+  cartProduct: {
+    amountWidget: '.widget-amount',
+    price: '.cart__product-price',
+    edit: '[href="#edit"]',
+    remove: '[href="#remove"]',
+  },
+  // CODE ADDED END
+};
 
-  const classNames = {
-    menuProduct: {
-      wrapperActive: 'active',
-      imageVisible: 'active',
-    },
-  };
+const classNames = {
+  menuProduct: {
+    wrapperActive: 'active',
+    imageVisible: 'active',
+  },
+  // CODE ADDED START
+  cart: {
+    wrapperActive: 'active',
+  },
+  // CODE ADDED END
+};
 
-  const settings = {
-    amountWidget: {
-      defaultValue: 1,
-      defaultMin: 1,
-      defaultMax: 9,
-    }
-  };
+const settings = {
+  amountWidget: {
+    defaultValue: 1,
+    defaultMin: 1,
+    defaultMax: 9,
+  }, // CODE CHANGED
+  // CODE ADDED START
+  cart: {
+    defaultDeliveryFee: 20,
+  },
+  // CODE ADDED END
+};
 
-  const templates = {
-    menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
-  };
+const templates = {
+  menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
+  // CODE ADDED START
+  cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
+  // CODE ADDED END
+};
 
   class Product {
     constructor(id, data) {
@@ -143,15 +177,7 @@
       });
     }
 
-    initAmountWidget() {
-      const thisProduct = this;
-      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
-      console.log(thisProduct.amountWidget);
-      thisProduct.amountWidgetElem.addEventListener('updated', function(){
-        thisProduct.processOrder();
-      });
 
-    }
     processOrder(){
       const thisProduct = this; // this wskazuje na całą instancje klasy Product(jedną z 4 powstałych). Każda z metod które piszemy w klasie odnosi sie do kazdej instancji z osobna
       //console.log(thisProduct);
@@ -197,6 +223,15 @@
       price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
     }
+    initAmountWidget() {
+      const thisProduct = this;
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      console.log(thisProduct.amountWidget);
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
+
+    }
   }
 
   class AmountWidget {
@@ -220,14 +255,15 @@
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
     setValue(value){
-      const thisWidget = this;
-      const newValue = parseInt(value);
-      if (newValue != thisWidget.value && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax){
-        thisWidget.value = newValue;
-        thisWidget.announce();
+      const thisWidget = this; // wskazanie na konkretną instancj na której ta metoda powinna być wykonana
+      const newValue = parseInt(value); // nowa stała która jest wartością inputa value pobraną z thisWidget.input.value i przekonwertowaną na typ number
+      console.log(thisWidget.value); // thisWidget.value to nic innego jak wartość pobrana z HTML-a z inputu(w przypadku gdy na wcześniejszym etapie była w szablonie), natomist później została dodana jako właściwość .value pobrana z settings.amountWidget.defaultValue, bo została wykasowana z szablonu
+      if (newValue != thisWidget.value && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax){ //sprawdzenie czy na nowa wartość o typie number spełnia konkretne warunki
+        thisWidget.value = newValue; // jeżeli warunki są spełnione to do thisWidget.value zostaje przypisana nowa wartość z typem number
+        thisWidget.announce(); // jakikolwiek event na dziecku który czeka na wywołanie w rodzicu na konkretnym elemencie
       }
       console.log(thisWidget.value);
-      thisWidget.input.value = thisWidget.value;
+      thisWidget.input.value = thisWidget.value; // przypisanie nowej warotści thisWidget.value do wartości inputa już po przekonwertowaniu na typ number
       console.log(thisWidget.input.value);
     }
 
