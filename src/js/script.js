@@ -174,6 +174,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -181,6 +182,7 @@
     processOrder(){
       const thisProduct = this; // this wskazuje na całą instancje klasy Product(jedną z 4 powstałych). Każda z metod które piszemy w klasie odnosi sie do kazdej instancji z osobna
       //console.log(thisProduct);
+      thisProduct.params = {};
       const formData = utils.serializeFormToObject(thisProduct.form); //generuje obiekt z elementuDOM(form) - nie mam pojecia jak to sie dzieje - powinienem?
       //console.log(formData);
       let price = thisProduct.data.price; //wskazuje na cene w analizowanej instancji
@@ -206,6 +208,13 @@
               }
             }
             if(formDataParam && formDataParam.includes(option)){
+              if(!thisProduct.params[param]){
+                thisProduct.params[param] = {
+                  label: paramValue.label,
+                  options: {},
+                };
+              }
+              thisProduct.params[param].options[option] = optionValue.label;
               let allImages = thisProduct.imageWrapper.querySelectorAll('.' + param + '-' + option);
               //console.log(allImages);
               for (let image of allImages) {
@@ -220,8 +229,13 @@
           }
         }
       }
-      price *= thisProduct.amountWidget.value;
-      thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita
+      thisProduct.priceSingle = price;
+      thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+      thisProduct.priceElem.innerHTML = thisProduct.price;
+      console.log(thisProduct.params);
+
+      /*price *= thisProduct.amountWidget.value;
+      thisProduct.priceElem.innerHTML = price; //wartość generowana po kazdej zmianie checkboxa/selekta/wcisnieciu submita*/
     }
     initAmountWidget() {
       const thisProduct = this;
@@ -230,7 +244,12 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function(){
         thisProduct.processOrder();
       });
-
+    }
+    addToCart(){
+      const thisProduct = this;
+      thisProduct.name = thisProduct.data.name;
+      thisProduct.amount = thisProduct.amountWidget.value;
+      app.cart.add(thisProduct);
     }
   }
 
@@ -298,9 +317,10 @@
 
       thisCart.products = [];
       thisCart.getElements(element);
-      thisCart.initActions()
+      thisCart.initActions();
+      thisCart.add();
 
-      console.log(thisCart)
+      console.log(thisCart);
     }
     getElements(element){
       const thisCart = this;
@@ -309,17 +329,33 @@
 
       thisCart.dom.wrapper = element;
 
-      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger)
+      thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+      console.log(thisCart.dom.productList);
 
     }
     initActions(){
       const thisCart = this;
 
       thisCart.dom.toggleTrigger.addEventListener('click', function(){
-        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive)
+        thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
         //console.log(thisCart.dom.wrapper)
-      })
+      });
+    }
+    add(menuProduct){
+      const thisCart = this;
+      const generatedHTML = templates.cartProduct(menuProduct);
+      console.log(generatedHTML);
+      /* create element using utils.createElementFromHTML */
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      //console.log(thisProduct.element);
+      /* find menu container */
+      const cartContainer = thisCart.dom.productList;
+      /* add element to menu */
+      cartContainer.appendChild(generatedDOM);
 
+      //console.log(menuProduct)
     }
   }
 
@@ -344,9 +380,9 @@
     initCart: function(){
       const thisApp = this;
 
-      const cartElem = document.querySelector(select.containerOf.cart)
-      console.log(cartElem)
-      thisApp.cart =  new Cart(cartElem)
+      const cartElem = document.querySelector(select.containerOf.cart);
+      console.log(cartElem);
+      thisApp.cart =  new Cart(cartElem);
     },
 
     init: function(){
