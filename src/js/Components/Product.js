@@ -18,15 +18,9 @@ class Product {
   }
   renderInMenu() {
     const thisProduct = this;
-    //console.log(thisProduct);
-    /* generate HTML based on template */
     const generatedHTML = templates.menuProduct(thisProduct.data);
-    /* create element using utils.createElementFromHTML */
     thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-    //console.log(thisProduct.element);
-    /* find menu container */
     const menuContainer = document.querySelector(select.containerOf.menu);
-    /* add element to menu */
     menuContainer.appendChild(thisProduct.element);
   }
 
