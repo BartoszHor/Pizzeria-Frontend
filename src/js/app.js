@@ -4,6 +4,50 @@ import Cart from './Components/Cart.js';
 
 const app = {
 
+  activatePage: function(pageId){
+    const thisApp = this;
+    for (let page of thisApp.pages){
+      page.classList.toggle(classNames.pages.active, page.id == pageId);
+    }
+    for (let link of thisApp.navLinks){
+      link.classList.toggle(
+        classNames.nav.active,
+        link.getAttribute('href') == '#' + pageId
+      );
+    }
+  },
+
+  initPages: function(){
+    const thisApp = this;
+
+    thisApp.pages = document.querySelector(select.containerOf.pages).children;
+    console.log(thisApp.pages);
+    thisApp.navLinks = document.querySelectorAll(select.nav.links);
+    const idFromHash = window.location.hash.replace('#/', '');
+
+    let pageMatchingHash = thisApp.pages[0].id;
+
+    for (let page of thisApp.pages){
+      if(page.id == idFromHash){
+        pageMatchingHash = page.id;
+        break;
+      }
+    }
+    thisApp.activatePage(pageMatchingHash);
+
+    for (let link of thisApp.navLinks) {
+      link.addEventListener('click', function(event){
+        const clickedElem = this;
+        event.preventDefault();
+        const id = clickedElem.getAttribute('href').replace('#', '');
+        thisApp.activatePage(id);
+        /* Change url hash */
+        window.location.hash = '#/' + id;
+
+      });
+    }
+  },
+
   initMenu: function() {
     const thisApp = this;
 
@@ -63,6 +107,7 @@ const app = {
 
     thisApp.initData();
     thisApp.initCart();
+    thisApp.initPages();
   },
 };
 
