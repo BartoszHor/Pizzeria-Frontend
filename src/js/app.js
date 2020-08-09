@@ -1,4 +1,4 @@
-import {settings, select, classNames, templates} from './settings.js';
+import {settings, select, classNames} from './settings.js';
 import Product from './Components/Product.js';
 import Cart from './Components/Cart.js';
 import Booking from './Components/Booking.js';
@@ -22,7 +22,7 @@ const app = {
     const thisApp = this;
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
-    console.log(thisApp.pages);
+    //console.log(thisApp.pages);
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
     const idFromHash = window.location.hash.replace('#/', '');
 
@@ -71,7 +71,7 @@ const app = {
         return rawResponse.json();
       })
       .then(function(parsedResponse){
-        console.log('parsedResponde', parsedResponse);
+        //console.log('parsedResponde', parsedResponse);
 
         /* save parsedResponse as thisApp.data.products */
         thisApp.data.products = parsedResponse;
@@ -80,7 +80,7 @@ const app = {
         thisApp.initMenu();
       });
 
-    console.log('thisApp.data', JSON.stringify(thisApp.data));
+    //console.log('thisApp.data', JSON.stringify(thisApp.data));
   },
 
   initCart: function(){
@@ -91,7 +91,7 @@ const app = {
     thisApp.cart =  new Cart(cartElem);
 
     thisApp.productList = document.querySelector(select.containerOf.menu);
-    console.log(thisApp.productList);
+    //console.log(thisApp.productList);
 
     thisApp.productList.addEventListener('add-to-cart', function(event){
       app.cart.add(event.detail.product);
@@ -107,11 +107,11 @@ const app = {
 
   init: function(){
     const thisApp = this;
-    console.log('*** App starting ***');
+    /*console.log('*** App starting ***');
     console.log('thisApp:', thisApp);
     console.log('classNames:', classNames);
     console.log('settings:', settings);
-    console.log('templates:', templates);
+    console.log('templates:', templates);*/
 
     thisApp.initData();
     thisApp.initCart();

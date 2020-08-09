@@ -10,7 +10,7 @@ class Cart {
     thisCart.getElements(element);
     thisCart.initActions();
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
-    console.log(thisCart.deliveryFee);
+    //console.log(thisCart.deliveryFee);
 
   }
   getElements(element){
@@ -23,7 +23,7 @@ class Cart {
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
     thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
-    console.log(thisCart.dom.phone, thisCart.dom.address);
+    //console.log(thisCart.dom.phone, thisCart.dom.address);
     thisCart.renderTotalKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
     for(let key of thisCart.renderTotalKeys){
@@ -31,9 +31,7 @@ class Cart {
       //console.log(thisCart.dom[key])
       //console.log('tes')
     }
-    console.log(thisCart.dom);
-    //console.log(thisCart.dom.productList);
-    console.log(thisCart.dom);
+
 
   }
   initActions(){
@@ -113,7 +111,6 @@ class Cart {
       products: [],
     };
     for(let pickedProduct of thisCart.products) {
-      pickedProduct.getData();
       payload.products.push(pickedProduct.getData());
     }
 
