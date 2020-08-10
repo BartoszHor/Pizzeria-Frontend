@@ -4,7 +4,6 @@ class BaseWidget{
 
     thisWidget.dom = {};
     thisWidget.dom.wrapper = wrapperElement;
-    //console.log(thisWidget.dom.wrapper)
     thisWidget.correctValue = initialValue;
   }
 
@@ -46,11 +45,11 @@ class BaseWidget{
 
   announce(){
     const thisWidget = this;
+
     const event = new CustomEvent('updated', {
       bubbles: true
     });
     thisWidget.dom.wrapper.dispatchEvent(event);
-    //console.log(event);
   }
 
 }

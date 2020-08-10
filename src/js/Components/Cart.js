@@ -10,7 +10,6 @@ class Cart {
     thisCart.getElements(element);
     thisCart.initActions();
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
-    //console.log(thisCart.deliveryFee);
 
   }
   getElements(element){
@@ -23,13 +22,10 @@ class Cart {
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
     thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
-    //console.log(thisCart.dom.phone, thisCart.dom.address);
     thisCart.renderTotalKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
     for(let key of thisCart.renderTotalKeys){
       thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
-      //console.log(thisCart.dom[key])
-      //console.log('tes')
     }
 
 
@@ -43,7 +39,6 @@ class Cart {
     });
     thisCart.dom.toggleTrigger.addEventListener('click', function(){
       thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-      //console.log(thisCart.dom.wrapper)
     });
     thisCart.dom.productList.addEventListener('updated', function(){
       thisCart.update();
@@ -56,9 +51,7 @@ class Cart {
   remove(cartProduct){
     const thisCart = this;
     const index = thisCart.products.indexOf(cartProduct);
-    console.log(index);
     thisCart.products.splice(index, 1);
-    console.log(cartProduct.dom.wrapper);
     cartProduct.dom.wrapper.remove();
     thisCart.update();
   }
@@ -71,15 +64,11 @@ class Cart {
     const cartContainer = thisCart.dom.productList;
     cartContainer.appendChild(generatedDOM);
     thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
-    //console.log(menuProduct, generatedDOM)
-    console.log(CartProduct);
     thisCart.update();
-    console.log(thisCart);
   }
 
   update(){
     const thisCart = this;
-    console.log(thisCart.products);
 
     thisCart.totalNumber = 0;
     thisCart.subtotalPrice = 0;
@@ -125,7 +114,6 @@ class Cart {
       .then(function(response){
         return response.json();
       }).then(function(parsedResponse){
-        console.log(parsedResponse);
       });
   }
 
