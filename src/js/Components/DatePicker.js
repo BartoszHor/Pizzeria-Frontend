@@ -8,6 +8,7 @@ class DatePicker extends BaseWidget{
     const thisWidget = this;
 
     thisWidget.dom.input = thisWidget.dom.wrapper.querySelector(select.widgets.datePicker.input);
+    thisWidget.dom.input.value = utils.dateToStr(new Date())
     thisWidget.initPlugin();
 
   }
@@ -28,7 +29,7 @@ class DatePicker extends BaseWidget{
           return (date.getDay() === 1);
         }
       ],
-      onChange: function(selectedDates, dateToStr) {
+      onChange: function(selectedDates, dateStr, instance) {
         thisWidget.value = dateStr;
       },
     });
@@ -42,6 +43,7 @@ class DatePicker extends BaseWidget{
   }
 
   renderValue(){
+
   }
 
 }

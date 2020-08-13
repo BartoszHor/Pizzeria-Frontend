@@ -10,6 +10,7 @@ class Cart {
     thisCart.getElements(element);
     thisCart.initActions();
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
+    console.log(thisCart)
 
   }
   getElements(element){
