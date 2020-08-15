@@ -73,9 +73,9 @@ const app = {
 
     const cartElem = document.querySelector(select.containerOf.cart);
     thisApp.cart =  new Cart(cartElem);
-    console.log(thisApp.cart)
+    //console.log(thisApp.cart);
     thisApp.productList = document.querySelector(select.containerOf.menu);
-    console.log(thisApp.productList)
+    //console.log(thisApp.productList);
     thisApp.productList.addEventListener('add-to-cart', function(event){
       app.cart.add(event.detail.product);
     });

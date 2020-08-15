@@ -171,7 +171,19 @@
         background: $color-dark;
         opacity: 0.4;
       }
-
+    }
+    &.active {
+      color: lighten($color-green, 40%);
+      &::after {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: $color-dark;
+        opacity: 0.4;
+        border: 2px solid black;
     }
   }
 

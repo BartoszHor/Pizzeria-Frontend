@@ -10,7 +10,7 @@ class Cart {
     thisCart.getElements(element);
     thisCart.initActions();
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
-    console.log(thisCart)
+    console.log(thisCart);
 
   }
   getElements(element){
@@ -115,6 +115,7 @@ class Cart {
       .then(function(response){
         return response.json();
       }).then(function(parsedResponse){
+        console.log(parsedResponse);
       });
   }
 
