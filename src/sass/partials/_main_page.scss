@@ -2,7 +2,7 @@
 
 .home-page-first-section {
   display: flex;
-  padding: 36px 0 0 0;
+  padding: 48px 0 48px 0;
   flex-flow: wrap;
 
   .link {
@@ -36,7 +36,6 @@
       transform: translateY(-12px);
       transition-timing-function: ease-in-out;
     }
-
   }
 
   .booking {
@@ -60,30 +59,110 @@
 
   /*Gallery*/
 
-  .gallery-container {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 48px 0 0 0;
+.gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 48px 0 0 0;
 
-    .photo {
-      width: 33.333333%;
-      height: 200px;
-      padding: 6px;
-      background-size: cover;
-      position: relative;
-    }
 
-    .photo::after {
+  .image-wrapper {
+    flex-basis: 33.333333%;
+    height: 200px;
+    position: relative;
+
+  }
+
+  .image-wrapper:hover::after {
       position: absolute;
       content: '';
-      width: 100%;
-      height: 100%;
+      width: 96%;
+      height: 96%;
       left: 0;
       top: 0;
-      background: blue;
-      opacity: 1;
-      }
+      background: grey;
+      opacity: 0.3;
+      border-radius: 2%;
+  }
+
+  img {
+    width: 96%;
+    height: 96%;
+    border-radius: 2%;
+    position: relative;
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: $color-light;
+    opacity: 0;
+    z-index: 2;
+    transition: 1s;
+
+    i {
+      padding: 5px;
+      font-size: 20px;
+      text-decoration: none;
     }
+
+    .fa-heart {
+      color: red;
+      transform: scale(0);
+      transition: 1s;
+    }
+
+    .fa-share-alt {
+      color: $color-main;
+    }
+  }
+
+  .image-wrapper:hover .fa-heart {
+      transform: scale(1);
+    }
+
+  .image-wrapper:hover .icon {
+    opacity: 1;
+  }
+}
+
+/* Opinions */
+
+.main-carousel {
+  margin: 36px 0;
+  height: 250px;
+
+.opinion-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.flickity-prev-next-button {
+  display: none;
+  }
+}
+
+.flickity-viewport {
+  height: 300px;
+}
+
+.carousel-photo {
+  height: 200px;
+  padding: 0 24px 0 12px;
+}
+
+.opinion-content {
+  height: 200px;
+  width: 310px;
+}
+
+.signature {
+  font-family: cursive;
+}
+
+
+
 
 
 

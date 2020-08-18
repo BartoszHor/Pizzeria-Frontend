@@ -9,6 +9,8 @@
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="vendor/range-slider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -80,13 +82,91 @@
             <p class="order-description"> TUE-SUN, 12PM - 12 AM </p>
           </div>
         </div>
+        <div class="main-carousel" data-flickity='{ "cellAlign": "right", "contain": false, "wrapAround": true, "autoPlay": true}'>
+          <div class="carousel-cell">
+            <div class="opinion-wrapper">
+              <img src="https://i.imgur.com/UZy12iY.jpg" class="carousel-photo" title="zdj2">
+              <div class="opinion-content">
+                <h1 class="opinion-header"> Great venue </h1>
+                <p class="opinion"> Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum </p>
+                <p class="signature"> - Gregory Bucher </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-cell">
+            <div class="opinion-wrapper">
+              <img src="https://i.imgur.com/UZy12iY.jpg" class="carousel-photo" title="zdj2">
+              <div class="opinion-content">
+                <h1 class="opinion-header"> Best Service </h1>
+                <p class="opinion"> Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum </p>
+                <p class="signature"> - Kaslik Amanow </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-cell">
+            <div class="opinion-wrapper">
+              <img src="https://i.imgur.com/UZy12iY.jpg" class="carousel-photo" title="zdj2">
+              <div class="opinion-content">
+                <h1 class="opinion-header"> Good snacks </h1>
+                <p class="opinion"> Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum </p>
+                <p class="signature"> - Rupert Sasanov </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-cell">
+           <div class="opinion-wrapper">
+              <img src="https://i.imgur.com/UZy12iY.jpg" class="carousel-photo" title="zdj2">
+              <div class="opinion-content">
+                <h1 class="opinion-header"> Delicious food </h1>
+                <p class="opinion"> Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum </p>
+                <p class="signature"> - Michalov Karpov </p>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="gallery-container">
-          <img src="https://i.imgur.com/1szQa9B.jpg" class="photo" title="pizza1">
-          <img src="https://i.imgur.com/9IWiNNn.jpg" class="photo" title="zdj2">
-          <img src="https://i.imgur.com/C68JCnV.jpg" class="photo" title="zdj3">
-          <img src="https://i.imgur.com/HM5DTHo.jpg" class="photo" title="zdj4">
-          <img src="https://i.imgur.com/BSYK3tT.jpg" class="photo" title="zdj5">
-          <img src="https://i.imgur.com/36qpfe2.jpg" class="photo" title="zdj6">
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/1szQa9B.jpg" class="photo" title="pizza1">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/9IWiNNn.jpg" class="photo" title="zdj2">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/C68JCnV.jpg" class="photo" title="zdj3">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/HM5DTHo.jpg" class="photo" title="zdj4">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/BSYK3tT.jpg" class="photo" title="zdj5">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
+          <div class="image-wrapper">
+            <img src="https://i.imgur.com/36qpfe2.jpg" class="photo" title="zdj6">
+            <div class="icon">
+              <a href="#"><i class="fas fa-heart"></i></a>
+              <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+          </div>
         </div>
         <a href="#" class="view-more">View more on Instagram</a>
       </div>
@@ -273,6 +353,7 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
   <script src="vendor/range-slider.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="js/app.js" type="module"></script>
