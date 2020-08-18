@@ -1,0 +1,89 @@
+/* Splash section */
+
+.home-page-first-section {
+  display: flex;
+  padding: 36px 0 0 0;
+  flex-flow: wrap;
+
+  .link {
+    color: red;
+    flex: 25%;
+    text-align: center;
+    text-decoration: none;
+    border-radius: $radius;
+    margin: 0 3px 0 0;
+    background-image: url('https://i.imgur.com/m9dBR0v.jpg');
+    background-size: cover;
+    background-position: center center;
+    color: $color-light;
+
+    h1 {
+      transition: 0.5s;
+    }
+
+    &:hover h1 {
+      transform: translateY(-12px);
+      transition-timing-function: ease-in-out;
+    }
+
+    p {
+      opacity: 0;
+      transition: 0.5s;
+    }
+
+    &:hover p {
+      opacity: 1;
+      transform: translateY(-12px);
+      transition-timing-function: ease-in-out;
+    }
+
+  }
+
+  .booking {
+    margin: 0 0 0 3px;
+    background-image: url('https://i.imgur.com/a1svbT4.jpg');
+    background-size: cover;
+    background-position: center center;
+    color: $color-light;
+  }
+  .opening-hours {
+    display: block;
+    color: $color-light;
+    text-align: center;
+    border: 1px solid black;
+    margin: 6px 0 0 0;
+    background-color: #ef7676;
+    border-radius: 2%;
+    flex: 100%;
+  }
+}
+
+  /*Gallery*/
+
+  .gallery-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 48px 0 0 0;
+
+    .photo {
+      width: 33.333333%;
+      height: 200px;
+      padding: 6px;
+      background-size: cover;
+      position: relative;
+    }
+
+    .photo::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: blue;
+      opacity: 1;
+      }
+    }
+
+
+

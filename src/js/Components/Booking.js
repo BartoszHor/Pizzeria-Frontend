@@ -142,7 +142,7 @@ class Booking {
       .then(function([bookings, eventCurrent, eventRepeat]){
         //console.log(bookings);
         //console.log(eventCurrent);
-        console.log(eventRepeat);
+        //console.log(eventRepeat);
         thisBooking.parseData(bookings, eventCurrent, eventRepeat);
       });
 

@@ -172,8 +172,10 @@
         opacity: 0.4;
       }
     }
+
     &.active {
-      color: lighten($color-green, 40%);
+      color: lighten($color-dark, 40%);
+
       &::after {
         position: absolute;
         content: '';
@@ -181,9 +183,9 @@
         height: 100%;
         left: 0;
         top: 0;
-        background: $color-dark;
+        background: green;
         opacity: 0.4;
-        border: 2px solid black;
+      }
     }
   }
 
