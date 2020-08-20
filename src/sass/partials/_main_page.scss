@@ -45,6 +45,7 @@
     background-position: center center;
     color: $color-light;
   }
+
   .opening-hours {
     display: block;
     color: $color-light;
@@ -56,8 +57,7 @@
     flex: 100%;
   }
 }
-
-  /*Gallery*/
+/*Gallery*/
 
 .gallery-container {
   display: flex;
@@ -73,15 +73,15 @@
   }
 
   .image-wrapper:hover::after {
-      position: absolute;
-      content: '';
-      width: 96%;
-      height: 96%;
-      left: 0;
-      top: 0;
-      background: grey;
-      opacity: 0.3;
-      border-radius: 2%;
+    position: absolute;
+    content: '';
+    width: 96%;
+    height: 96%;
+    left: 0;
+    top: 0;
+    background: grey;
+    opacity: 0.3;
+    border-radius: 2%;
   }
 
   img {
@@ -119,8 +119,8 @@
   }
 
   .image-wrapper:hover .fa-heart {
-      transform: scale(1);
-    }
+    transform: scale(1);
+  }
 
   .image-wrapper:hover .icon {
     opacity: 1;
@@ -133,13 +133,13 @@
   margin: 36px 0;
   height: 250px;
 
-.opinion-wrapper {
-  display: flex;
-  width: 100%;
-}
+  .opinion-wrapper {
+    display: flex;
+    width: 100%;
+  }
 
-.flickity-prev-next-button {
-  display: none;
+  .flickity-prev-next-button {
+    display: none;
   }
 }
 
@@ -160,9 +160,3 @@
 .signature {
   font-family: cursive;
 }
-
-
-
-
-
-
