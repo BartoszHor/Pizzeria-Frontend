@@ -5,6 +5,24 @@ import Booking from './Components/Booking.js';
 
 const app = {
 
+  switchPages: function(){
+    const thisApp = this;
+
+    thisApp.dom = {};
+    thisApp.dom.links = document.querySelectorAll('.link');
+    for(let link of thisApp.dom.links) {
+      link.addEventListener('click', function(e){
+        const clickedElem = this;
+        e.preventDefault();
+        const id = clickedElem.getAttribute('href').replace('#', '');
+        thisApp.activatePage(id);
+        window.location.hash = '#/' + id;
+
+      });
+    }
+
+  },
+
   activatePage: function(pageId){
     const thisApp = this;
     for (let page of thisApp.pages){
@@ -22,6 +40,7 @@ const app = {
     const thisApp = this;
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
+    console.log(thisApp.pages);
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
     const idFromHash = window.location.hash.replace('#/', '');
     let pageMatchingHash = thisApp.pages[0].id;
@@ -95,6 +114,7 @@ const app = {
     thisApp.initCart();
     thisApp.initPages();
     thisApp.initBooking();
+    thisApp.switchPages();
   },
 };
 
