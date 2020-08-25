@@ -14,7 +14,68 @@ class Booking {
     thisBooking.initTableListeners();
     thisBooking.submitAction();
 
+
   }
+
+  colorHourpicker(){
+    const thisBooking = this;
+
+    thisBooking.dom.rangeslider = thisBooking.dom.form.querySelector('.rangeSlider');
+    //thisBooking.dom.rangesliderBcg = thisBooking.dom.form.querySelector('.rangeSlider__fill')
+    //console.log(thisBooking.dom.rangeslider)
+    let startHour = 12;
+    let closingHour = 24;
+    let allAvailableHours = [];
+    let tableAmount = [];
+    let colors = [];
+    let linearStyle = [];
+
+    for (let date in thisBooking.booked) {
+
+    for(let i = startHour; i < closingHour; i += 0.5){
+      allAvailableHours.push(i);
+    }
+    //console.log(allAvailableHours);
+
+    for(let hour of allAvailableHours) {
+      if(!thisBooking.booked[thisBooking.date][hour]){
+        tableAmount.push(0);
+      } else {
+        tableAmount.push(thisBooking.booked[thisBooking.date][hour].length);
+      }
+    }
+    console.log(tableAmount);
+    for(let table of tableAmount) {
+      if (table == 0) {
+        colors.push('green')
+      } else if (table == 1) {
+        colors.push('orange')
+      } else if (table == 2 || table >= 3){
+        colors.push('red')
+      }
+    }
+
+    let end = Math.round(100/colors.length);
+    let helper = Math.round(100/colors.length);
+    let begin = 0;
+
+    for (let color of colors) {
+      linearStyle.push(color + ' ' + begin + '%' + ' ' + end + '%')
+      begin += helper
+      end += helper
+    }
+    console.log(linearStyle)
+
+
+    const finalStyle = linearStyle.join(', ')
+    console.log(finalStyle)
+
+
+    thisBooking.dom.rangeslider.style.background = 'linear-gradient(to right, ' + finalStyle + ')'
+    console.log(thisBooking.booked);
+  }
+}
+
 
   submitAction(){
     const thisBooking = this;
@@ -140,8 +201,8 @@ class Booking {
         ]);
       })
       .then(function([bookings, eventCurrent, eventRepeat]){
-        //console.log(bookings);
-        //console.log(eventCurrent);
+        console.log(bookings);
+        console.log(eventCurrent);
         //console.log(eventRepeat);
         thisBooking.parseData(bookings, eventCurrent, eventRepeat);
       });
@@ -169,7 +230,10 @@ class Booking {
           thisBooking.makeBooked(utils.dateToStr(loopData), item.hour, item.duration, item.table);
       }
     }
+
     thisBooking.updateDOM();
+    thisBooking.colorHourpicker();
+
 
     //console.log(thisBooking.booked);
   }
@@ -234,6 +298,7 @@ class Booking {
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+    //console.log(thisBooking.booked)
   }
 
   render(element){
