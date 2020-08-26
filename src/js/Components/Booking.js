@@ -13,8 +13,6 @@ class Booking {
     thisBooking.getData();
     thisBooking.initTableListeners();
     thisBooking.submitAction();
-
-
   }
 
   colorHourpicker(){
@@ -22,7 +20,6 @@ class Booking {
 
     thisBooking.dom.rangeslider = thisBooking.dom.form.querySelector('.rangeSlider');
     //thisBooking.dom.rangesliderBcg = thisBooking.dom.form.querySelector('.rangeSlider__fill')
-    //console.log(thisBooking.dom.rangeslider)
     let startHour = 12;
     let closingHour = 24;
     let allAvailableHours = [];
@@ -30,12 +27,9 @@ class Booking {
     let colors = [];
     let linearStyle = [];
 
-    for (let date in thisBooking.booked) {
-
     for(let i = startHour; i < closingHour; i += 0.5){
       allAvailableHours.push(i);
     }
-    //console.log(allAvailableHours);
 
     for(let hour of allAvailableHours) {
       if(!thisBooking.booked[thisBooking.date][hour]){
@@ -44,37 +38,33 @@ class Booking {
         tableAmount.push(thisBooking.booked[thisBooking.date][hour].length);
       }
     }
-    console.log(tableAmount);
+
     for(let table of tableAmount) {
-      if (table == 0) {
-        colors.push('green')
-      } else if (table == 1) {
-        colors.push('orange')
-      } else if (table == 2 || table >= 3){
-        colors.push('red')
+      if (table >= 3) {
+        colors.push('red');
+      } else if (table == 2) {
+        colors.push('orange');
+      } else if (table <= 1) {
+        colors.push('green');
       }
     }
 
+    let begin = 0;
     let end = Math.round(100/colors.length);
     let helper = Math.round(100/colors.length);
-    let begin = 0;
 
     for (let color of colors) {
-      linearStyle.push(color + ' ' + begin + '%' + ' ' + end + '%')
-      begin += helper
-      end += helper
+      linearStyle.push(color + ' ' + begin + '%' + ' ' + end + '%');
+      begin += helper;
+      end += helper;
     }
-    console.log(linearStyle)
 
+    const finalStyle = linearStyle.join(', ');
 
-    const finalStyle = linearStyle.join(', ')
-    console.log(finalStyle)
-
-
-    thisBooking.dom.rangeslider.style.background = 'linear-gradient(to right, ' + finalStyle + ')'
+    thisBooking.dom.rangeslider.style.background = 'linear-gradient(to right, ' + finalStyle + ')';
     console.log(thisBooking.booked);
   }
-}
+
 
 
   submitAction(){
@@ -94,7 +84,7 @@ class Booking {
     const payload = {
       date: thisBooking.datePicker.value,
       hour: thisBooking.hourPicker.value,
-      table: thisBooking.tableId,
+      table: parseInt(thisBooking.tableId),
       duration: thisBooking.dom.reservationDuration.value + 'h',
       ppl: thisBooking.dom.peopleAmount.value,
       phone: thisBooking.dom.phone.value,
@@ -143,6 +133,7 @@ class Booking {
         activeTable.classList.remove('active');
       }
       table.classList.add('active');
+      //table.classList.add(classNames.booking.tableBooked);
       thisBooking.tableId = table.getAttribute('data-table');
     }
   }
@@ -171,7 +162,7 @@ class Booking {
       ],
     };
 
-    console.log('getData params:', params);
+    //console.log('getData params:', params);
 
     const urls = {
       booking:         settings.db.url + '/' + settings.db.booking
@@ -182,7 +173,7 @@ class Booking {
                                        + '?' + params.eventRepeat.join('&'),
 
     };
-    console.log(urls.eventCurrent);
+    //console.log(urls.eventCurrent);
 
     Promise.all([
       fetch(urls.booking),
@@ -201,8 +192,8 @@ class Booking {
         ]);
       })
       .then(function([bookings, eventCurrent, eventRepeat]){
-        console.log(bookings);
-        console.log(eventCurrent);
+        //console.log(bookings);
+        //console.log(eventCurrent);
         //console.log(eventRepeat);
         thisBooking.parseData(bookings, eventCurrent, eventRepeat);
       });
@@ -230,10 +221,9 @@ class Booking {
           thisBooking.makeBooked(utils.dateToStr(loopData), item.hour, item.duration, item.table);
       }
     }
-
+    console.log(thisBooking.booked);
     thisBooking.updateDOM();
-    thisBooking.colorHourpicker();
-
+    thisBooking.colorHourpicker()
 
     //console.log(thisBooking.booked);
   }
@@ -252,7 +242,7 @@ class Booking {
     }
     thisBooking.booked[date][startHour].push(table);
 
-    for(let hourBlock = startHour; hourBlock < startHour + duration ; hourBlock += 0.5){
+    for(let hourBlock = startHour; hourBlock < startHour + duration; hourBlock += 0.5){
       if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
         thisBooking.booked[date][hourBlock] = [];
         thisBooking.booked[date][hourBlock].push(table);
@@ -298,6 +288,7 @@ class Booking {
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+
     //console.log(thisBooking.booked)
   }
 
