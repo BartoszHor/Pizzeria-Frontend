@@ -19,7 +19,7 @@ class Booking {
     const thisBooking = this;
 
     thisBooking.dom.rangeslider = thisBooking.dom.form.querySelector('.rangeSlider');
-    thisBooking.dom.rangesliderBcg = thisBooking.dom.form.querySelector('.rangeSlider__fill')
+    thisBooking.dom.rangesliderBcg = thisBooking.dom.form.querySelector('.rangeSlider__fill');
     let startHour = 12;
     let closingHour = 24;
     let allAvailableHours = [];
@@ -28,11 +28,11 @@ class Booking {
 
     for(let i = startHour; i < closingHour; i += 0.5){
       allAvailableHours.push(i);
-      let tableAmount = 0
-        if(!thisBooking.booked[thisBooking.date][i]){
-        tableAmount = 0
+      let tableAmount = 0;
+      if(!thisBooking.booked[thisBooking.date][i]){
+        tableAmount = 0;
       } else {
-        tableAmount = thisBooking.booked[thisBooking.date][i].length
+        tableAmount = thisBooking.booked[thisBooking.date][i].length;
       }
       if (tableAmount >= 3) {
         colors.push('red');
